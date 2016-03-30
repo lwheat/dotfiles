@@ -265,6 +265,11 @@ in `dotspacemacs/user-config'."
     (interactive)
     (move-to-window-line -1)
     )
+
+  ;; make the default window frame size a little bigger
+  ;; '((top . 1) (left . 1) (width . 160) (height . 55)))
+  (setq default-frame-alist
+        '((top . 1) (left . 1) (width . 160) (height . 55)))
 )
 
 (defun dotspacemacs/user-config ()
@@ -294,6 +299,9 @@ layers configuration. You are free to put any user code."
   ;; Set some spacemacs toggles
   (spacemacs/toggle-spelling-checking-off)
   (spacemacs/toggle-vi-tilde-fringe-off)
+
+  ;; open log files in text-mode
+  (add-to-list 'auto-mode-alist '("\\.log\\'" . text-mode))
 
   ;; scroll a single line when the cursor get to the top of the window
   (setq scroll-step 1)
