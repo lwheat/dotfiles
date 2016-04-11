@@ -284,6 +284,7 @@ layers configuration. You are free to put any user code."
   (global-set-key "\ew" 'copy-region-as-kill)
   (global-set-key "\eg" 'goto-line)
   (global-set-key "\C-xp" 'previous-multiframe-window)
+  (global-set-key (kbd "s-g") 'find-grep)
   (global-set-key [s-home] 'my-move-to-top-of-window)
   (global-set-key [s-end] 'my-move-to-bottom-of-window)
   (global-set-key [s-up] 'View-scroll-line-forward)     ;; requires the view library
