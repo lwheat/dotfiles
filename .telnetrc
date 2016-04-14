@@ -1,0 +1,3 @@
+# default subcommands that apply to all systems
+DEFAULT
+    set autologin off

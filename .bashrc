@@ -98,6 +98,7 @@ case "$OSTYPE" in
         alias l.='/bin/ls -dFG .*'
         alias ll='/bin/ls -lFG'
         alias ls='ls -G'
+        alias unquarantine='xattr -d com.apple.quarantine'
         ;;
 esac
 
