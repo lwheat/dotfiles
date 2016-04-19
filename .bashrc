@@ -48,6 +48,11 @@ fi
 [ -d /usr/local/go ] && export GOROOT=/usr/local/go
 [ -d ~/work/go ] && export GOPATH=~/work/go
 
+## set orion build/test options
+#export GINKGO_FOCUS=data make aat
+#export SUITE_FOCUS=local
+#export SUITE_FOCUS=dotcom
+
 ## Other look and feel
 
 # Colorized prompt
