@@ -83,6 +83,9 @@ export MANPAGER=$PAGER
 
 # add basic perforce setup options
 export P4CONFIG=.p4env
+# perforce.spirentcom.com:1666
+#export P4PORT=10.180.22.2:1666
+# perforce-rtp.spirentcom.com:1999
 export P4PORT=10.28.50.70:1999
 
 [ -x /bin/stty ] && {
