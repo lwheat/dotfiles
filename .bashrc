@@ -81,6 +81,10 @@ export GREP_OPTIONS='--color=auto'
 export PAGER=less
 export MANPAGER=$PAGER
 
+# add basic perforce setup options
+export P4CONFIG=.p4env
+export P4PORT=10.28.50.70:1999
+
 [ -x /bin/stty ] && {
     # Turn off stop (^S) control character
     stty stop undef
