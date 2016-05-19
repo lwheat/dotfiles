@@ -286,6 +286,8 @@ layers configuration. You are free to put any user code."
   (global-set-key "\C-xp" 'previous-multiframe-window)
   (global-set-key "\C-x\C-r" 'recentf-open-files)
   (global-set-key (kbd "s-g") 'find-grep)
+  (global-set-key [M-up] 'shrink-window)
+  (global-set-key [M-down] 'enlarge-window)
   (global-set-key [s-home] 'my-move-to-top-of-window)
   (global-set-key [s-end] 'my-move-to-bottom-of-window)
   (global-set-key [s-up] 'View-scroll-line-forward)     ;; requires the view library
