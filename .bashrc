@@ -103,6 +103,8 @@ case "$OSTYPE" in
         alias l.='/bin/ls -dF .* --color=auto'
         alias ll='/bin/ls -lF --color=auto'
         alias ls='ls --color=auto'
+        alias pkg-outdated='/usr/lib/update-notifier/apt-check -p'
+        alias pmotd='test -f /etc/motd && cat /etc/motd'
         ;;
 
     darwin*)
