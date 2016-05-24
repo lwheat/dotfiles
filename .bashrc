@@ -103,8 +103,13 @@ case "$OSTYPE" in
         alias l.='/bin/ls -dF .* --color=auto'
         alias ll='/bin/ls -lF --color=auto'
         alias ls='ls --color=auto'
+        # a few admin aliases to see current MOTD and the packages that are outdated and could be updated
         alias pkg-outdated='/usr/lib/update-notifier/apt-check -p'
-        alias pmotd='test -f /etc/motd && cat /etc/motd'
+        if [ -d /etc/update-motd.d ] && [ -f /bin/run-parts ]; then
+            alias pmotd='test -d /etc/update-motd.d && /bin/run-parts /etc/update-motd.d'
+        else
+            alias pmotd='test -f /etc/motd && cat /etc/motd'
+        fi
         ;;
 
     darwin*)
