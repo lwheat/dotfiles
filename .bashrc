@@ -126,6 +126,7 @@ esac
 alias lsd='/bin/ls -l | grep ^d'
 alias sha1='openssl dgst -sha1'
 alias sha256='openssl dgst -sha256'
+alias ssh-nosave='ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
 alias md5='openssl dgst -md5'
 alias unquarantine='xattr -d com.apple.quarantine'
 alias xemacs="xterm -geometry 250x80 emacs -bg black -fg white"
