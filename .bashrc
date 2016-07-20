@@ -118,6 +118,11 @@ case "$OSTYPE" in
         alias ll='/bin/ls -lFG'
         alias ls='ls -G'
         alias unquarantine='xattr -d com.apple.quarantine'
+
+        # if docker-machine is installed, add alias to configure environment so we can talk to it
+        if [ ! -z "`which docker-machine`" ]; then
+            alias docker-env='eval "$(docker-machine env)"'
+        fi
         ;;
 esac
 
