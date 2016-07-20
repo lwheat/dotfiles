@@ -121,7 +121,8 @@ case "$OSTYPE" in
 
         # if docker-machine is installed, add alias to configure environment so we can talk to it
         if [ ! -z "`which docker-machine`" ]; then
-            alias docker-env='eval "$(docker-machine env)"'
+            alias docker-setenv='eval "$(docker-machine env)"'
+            alias docker-rmenv='unset `printenv | grep ^DOCKER | cut -f1 -d=`'
         fi
         ;;
 esac
