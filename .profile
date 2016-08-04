@@ -18,6 +18,7 @@ export VISUAL=$EDITOR
 ## Prepend miscellaneous directories to PATH
 [ -d ~/bin ]                        && PATH=~/bin:$PATH
 [ -d ~/.cabal/bin ]                 && PATH=~/.cabal/bin:$PATH
+[ -d /usr/lib/postgresql/9.4/bin ]  && PATH=/usr/lib/postgresql/9.4/bin:$PATH
 [ -d ~/work/go/bin ]                && PATH=~/work/go/bin:$PATH
 [ -d ~/Library/Haskell/bin ]        && PATH=~/Library/Haskell/bin:$PATH
 [ -d /usr/local/git ]               && PATH=/usr/local/git/bin:$PATH
