@@ -1,15 +1,19 @@
-### ~/.profile
+# ~/.profile: executed by the command interpreter for login shells.
+# This file is not read by bash(1), if ~/.bash_profile or ~/.bash_login
+# exists.
+# see /usr/share/doc/bash/examples/startup-files for examples.
+# the files are located in the bash-doc package.
 
 ## OS-specific environment setup
 case "$OSTYPE" in
     linux*)
         export PATH=/usr/local/bin:$PATH
-        export EDITOR=/usr/local/bin/emacs
+        [ -d /opt/emacs/bin/emacs ] && export EDITOR=/opt/emacs/bin/emacs || export EDITOR=/usr/local/bin/emacs
         ;;
 
     darwin*)
         export PATH=/usr/local/bin:$PATH
-        export EDITOR=/usr/local/bin/emacs
+        [ -d /usr/local/bin/emacs ] && export EDITOR=/usr/local/bin/emacs || export EDITOR=/opt/emacs/bin/emacs
         ;;
 esac
 
@@ -18,7 +22,6 @@ export VISUAL=$EDITOR
 ## Prepend miscellaneous directories to PATH
 [ -d ~/bin ]                        && PATH=~/bin:$PATH
 [ -d ~/.cabal/bin ]                 && PATH=~/.cabal/bin:$PATH
-[ -d /usr/lib/postgresql/9.4/bin ]  && PATH=/usr/lib/postgresql/9.4/bin:$PATH
 [ -d ~/work/go/bin ]                && PATH=~/work/go/bin:$PATH
 [ -d ~/Library/Haskell/bin ]        && PATH=~/Library/Haskell/bin:$PATH
 [ -d /usr/local/git ]               && PATH=/usr/local/git/bin:$PATH
