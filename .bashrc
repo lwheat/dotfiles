@@ -136,6 +136,7 @@ alias ssh-nosave='ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/nul
 alias scp-nosave='scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
 alias md5='openssl dgst -md5'
 alias unquarantine='xattr -d com.apple.quarantine'
+alias uuidhash='uuidgen | tr [A-Z] [a-z] | sed "s/-//g"'
 alias xemacs="xterm -geometry 250x80 emacs -bg black -fg white"
 alias z='clear'
 
