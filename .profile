@@ -8,12 +8,12 @@
 case "$OSTYPE" in
     linux*)
         export PATH=/usr/local/bin:$PATH
-        [ -d /opt/emacs/bin/emacs ] && export EDITOR=/opt/emacs/bin/emacs || export EDITOR=/usr/local/bin/emacs
+        [ -f /opt/emacs/bin/emacs ] && export EDITOR=/opt/emacs/bin/emacs || export EDITOR=/usr/local/bin/emacs
         ;;
 
     darwin*)
         export PATH=/usr/local/bin:$PATH
-        [ -d /usr/local/bin/emacs ] && export EDITOR=/usr/local/bin/emacs || export EDITOR=/opt/emacs/bin/emacs
+        [ -f /usr/local/bin/emacs ] && export EDITOR=/usr/local/bin/emacs || export EDITOR=/opt/emacs/bin/emacs
         ;;
 esac
 
