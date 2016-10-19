@@ -125,6 +125,7 @@ case "$OSTYPE" in
         else
             alias pmotd='test -f /etc/motd && cat /etc/motd'
         fi
+        alias vncsetup="vncserver -geometry 1870x980 -alwaysshared :`id -u`"
         ;;
 
     darwin*)
