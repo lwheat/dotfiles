@@ -26,6 +26,7 @@ export VISUAL=$EDITOR
 [ -d ~/Library/Haskell/bin ]        && PATH=~/Library/Haskell/bin:$PATH
 [ -d /usr/local/git ]               && PATH=/usr/local/git/bin:$PATH
 [ -d /usr/local/go ]                && PATH=/usr/local/go/bin:$PATH
+[ -d `dirname $EDITOR` ]            && PATH=`dirname $EDITOR`:$PATH
 
 ## Finally, append . to the PATH
 export PATH=$PATH:.
