@@ -1,0 +1,8 @@
+#P4PORT=perforce-rtp.spirentcom.com:1999
+P4PORT=10.28.50.70:1999
+P4CLIENT=lwheat-mac-integration
+#P4HOST=rtpc02mh2sxfd58.ad.spirentcom.com
+P4USER=lwheat
+P4EDITOR=emacs
+
+export P4PORT P4CLIENT P4EDITOR P4USER
