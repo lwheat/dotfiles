@@ -1,0 +1,9 @@
+# system-wide mercurial configuration file
+# See hgrc(5) for more information
+[extensions]
+largefiles =
+
+[largefiles]
+minsize = 2
+patterns = *.bz2 *.gz *.xz *.tbz *.tgz *.txz *.zip *.png *.jpg *.iso *.sh
+#usercache=/cacheDirs/hgcache
