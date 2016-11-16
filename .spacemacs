@@ -25,7 +25,9 @@ values."
      ;; ----------------------------------------------------------------
      auto-completion
      (c-c++ :variables
-            c-c++-default-mode-for-headers 'c++-mode)
+            c-c++-default-mode-for-headers 'c++-mode
+            c-c++-enable-clang-support t)
+     cscope
      djoyner-ibuffer
      dockerfile
      emacs-lisp
@@ -43,6 +45,7 @@ values."
      osx
      python
      salt
+     semantic
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom)

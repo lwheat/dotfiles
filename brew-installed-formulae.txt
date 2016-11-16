@@ -1,0 +1,28 @@
+autoconf 2.69
+automake 1.15
+clang-format 2016-08-03
+cscope 15.8b
+dmidecode 3.0
+emacs-mac emacs-25.1-rc2-mac-5.91 emacs-25.1-z-mac-6.0
+fakeroot 1.20.2
+flyway 4.0.3
+gdbm 1.12
+gmp 6.1.1
+gnu-tar 1.29_1
+grafana 3.1.1
+ispell 3.4.00
+jq 1.5 1.5_1
+lzo 2.09
+mercurial 4.0
+node 6.3.1 6.4.0
+oniguruma 5.9.6 6.0.0
+openssl 1.0.2j
+pandoc 1.17.2
+pkg-config 0.29.1_2
+postgresql94 9.4.9_1
+python 2.7.12_2
+readline 7.0
+rsync 3.1.2
+sqlite 3.15.1
+wget 1.18
+xz 5.2.2
