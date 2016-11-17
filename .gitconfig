@@ -88,6 +88,8 @@
 	f = "!git ls-files | GREP_OPTIONS= grep -i"
 	# File log
 	fl = log -u
+	# show remote repo connections
+	rv = remote -v
 
 [difftool "sourcetree"]
 	cmd = /Applications/p4merge.app/Contents/MacOS/p4merge \"$LOCAL\" \"$REMOTE\"
