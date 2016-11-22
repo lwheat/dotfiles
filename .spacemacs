@@ -122,8 +122,8 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
-   dotspacemacs-default-font '("Consolas"
-                               :size 11.0
+   dotspacemacs-default-font '("Consolas" ;; "Monaco" ;; "Consolas" ;; "DejaVu Sans Mono"
+                               :size 12.0 ;;  12.0 ;;     11.0 ;;       10.0
                                :weight normal
                                :width normal
                                :powerline-scale 1.1)
@@ -326,6 +326,7 @@ layers configuration. You are free to put any user code."
    tab-width 8
 
    ;; whitespace-mode
+   (add-hook 'before-save-hook 'delete-trailing-whitespace)
    whitespace-style '(face tabs newline-mark tab-mark)
    whitespace-display-mappings '((newline-mark 10 [172 10])
                                  (tab-mark 9 [9655 9])))
