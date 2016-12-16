@@ -28,14 +28,14 @@ values."
             c-c++-default-mode-for-headers 'c++-mode
             c-c++-enable-clang-support t)
      cscope
-     djoyner-ibuffer
+     mylocal-ibuffer
      dockerfile
      emacs-lisp
      (git :variables
           git-gutter-use-fringe t)
      github
      go
-     haskell
+     ;haskell
      html
      (ibuffer :variables
               ibuffer-group-buffers-by nil)
@@ -60,10 +60,7 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages
-   '(
-     whitespace-mode
-     )
+   dotspacemacs-additional-packages '()
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '()
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
@@ -264,6 +261,12 @@ in `dotspacemacs/user-config'."
   ;; grab the view library to get the window scrolling functions
   (load-library "view")
 
+  (defun my-cc-coding-indent ()
+    (interactive)
+    (c-set-style "k&r")
+    (cscope-setup)
+    )
+
   (defun my-move-to-top-of-window ()
     (interactive)
     (move-to-window-line 0)
@@ -278,6 +281,11 @@ in `dotspacemacs/user-config'."
   ;; '((top . 1) (left . 1) (width . 160) (height . 55)))
   (setq default-frame-alist
         '((top . 1) (left . 1) (width . 160) (height . 55)))
+
+  ;; test font checking elisp
+  (cond
+   ((find-font (font-spec :name "Consolas"))
+    (message "found Consolas")))
 )
 
 (defun dotspacemacs/user-config ()
@@ -323,14 +331,16 @@ layers configuration. You are free to put any user code."
   (setq scroll-step 1)
 
   ;; Other overrides and defaults
+  (add-hook 'c-mode-common-hook 'my-cc-coding-indent)
+  (add-hook 'before-save-hook 'delete-trailing-whitespace)
+  (whitespace-mode)
   (setq-default
-   ;; tabs
-   indent-tabs-mode nil
-   tab-width 8
+   ;; tabs & indentation
+   tab-width 4
+   indent-tabs-mode nil ; use spaces instead of tabs
+   c-basic-offset 4
 
    ;; whitespace-mode
-   ;whitespace-mode
-   (add-hook 'before-save-hook 'delete-trailing-whitespace)
    whitespace-style '(face tabs newline-mark tab-mark)
    whitespace-display-mappings '((newline-mark 10 [172 10])
                                  (tab-mark 9 [9655 9])))

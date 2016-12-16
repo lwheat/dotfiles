@@ -119,7 +119,7 @@ case "$OSTYPE" in
         alias ll='/bin/ls -lF --color=auto'
         alias ls='ls --color=auto'
         # a few admin aliases to see current MOTD and the packages that are outdated and could be updated
-        alias pkg-outdated='/usr/lib/update-notifier/apt-check -p'
+        alias pkg-outdated='/usr/lib/update-notifier/apt-check -p 2>&1 | sort'
         if [ -d /etc/update-motd.d ] && [ -f /bin/run-parts ]; then
             alias pmotd='test -d /etc/update-motd.d && /bin/run-parts /etc/update-motd.d'
         else
@@ -151,6 +151,7 @@ alias sha256='openssl dgst -sha256'
 alias ssh-nosave='ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
 alias scp-nosave='scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
 alias md5='openssl dgst -md5'
+[ -f ~/bin/Table.jar -a -f ~/bin/TABLE.properties ] && alias table-build='java -jar ~/bin/Table.jar'
 alias unquarantine='xattr -d com.apple.quarantine'
 alias uuidhash='uuidgen | tr [A-Z] [a-z] | sed "s/-//g"'
 alias xemacs="xterm -geometry 250x80 emacs -bg black -fg white"

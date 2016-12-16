@@ -1,6 +1,6 @@
-(setq djoyner-ibuffer-packages '(ibuffer))
+(setq mylocal-ibuffer-packages '(ibuffer))
 
-(defun djoyner-ibuffer/pre-init-ibuffer ()
+(defun mylocal-ibuffer/pre-init-ibuffer ()
   (with-eval-after-load 'ibuffer
     (require 'projectile)
     (setq ibuffer-saved-filter-groups (list (cons "default"
