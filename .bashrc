@@ -96,6 +96,14 @@ export GREP_OPTIONS='--color=auto'
 export PAGER=less
 export MANPAGER=$PAGER
 
+# functions and environment settings to handle python virtual environments
+#export PIP_REQUIRE_VIRTUALENV=true
+
+# allow install/update of global packages
+gpip() {
+    PIP_REQUIRE_VIRTUALENV="" pip "$@"
+}
+
 # add basic perforce setup options
 export P4CONFIG=.p4env
 # perforce.spirentcom.com:1666
@@ -135,7 +143,7 @@ case "$OSTYPE" in
         alias ls='ls -G'
         alias unquarantine='xattr -d com.apple.quarantine'
 
-        # if docker-machine is installed, add alias to configure environment so we can talk to it
+        # if docker-machine is installed, add alias to configure/remove environment so we can talk to it
         if [ ! -z "`which docker-machine`" ]; then
             alias docker-setenv='eval "$(docker-machine env)"'
             alias docker-rmenv='unset `printenv | grep ^DOCKER | cut -f1 -d=`'
@@ -145,7 +153,8 @@ esac
 
 ## Aliases - common
 #alias emacs='emacs -bg black -fg white'
-alias lsd='/bin/ls -l | grep ^d'
+alias lsd="/bin/ls -F | grep / | sed -e 's,/$,,'"
+alias llsd='/bin/ls -l | grep ^d'
 alias sha1='openssl dgst -sha1'
 alias sha256='openssl dgst -sha256'
 alias ssh-nosave='ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
