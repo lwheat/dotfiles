@@ -23,6 +23,7 @@ export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
 
 # Save multi-line commands as one command
 shopt -s cmdhist
+
 # Match filenames in case-insensitive fashion
 shopt -s nocaseglob
 
@@ -141,7 +142,9 @@ case "$OSTYPE" in
         alias l.='/bin/ls -dFG .*'
         alias ll='/bin/ls -lFG'
         alias ls='ls -G'
+        alias lsusb="ioreg -p IOUSB -w 0"
         alias unquarantine='xattr -d com.apple.quarantine'
+        [ -f "/Applications/VMware Fusion.app/Contents/Library/VMware OVF Tool/ovftool" ] && alias ovftool="/Applications/VMware\ Fusion.app/Contents/Library/VMware\ OVF\ Tool/ovftool"
 
         # if docker-machine is installed, add alias to configure/remove environment so we can talk to it
         if [ ! -z "`which docker-machine`" ]; then
@@ -153,7 +156,8 @@ esac
 
 ## Aliases - common
 #alias emacs='emacs -bg black -fg white'
-alias lsd="/bin/ls -F | grep / | sed -e 's,/$,,'"
+alias lsd='/bin/ls -F | grep / | sed -e "s,/$,,"'
+alias lsdd='/bin/ls -Fd .[A-Z][a-z]* * | grep / | sed -e "s,/$,,"'
 alias llsd='/bin/ls -l | grep ^d'
 alias sha1='openssl dgst -sha1'
 alias sha256='openssl dgst -sha256'
