@@ -139,23 +139,101 @@ case "$OSTYPE" in
         ;;
 
     darwin*)
+        alias-app() {
+            if [ $# -gt 0 ]; then
+                appPath="$1"
+                if [ -f "$appPath" -a -x "$appPath" ]; then
+                    if [ $# -gt 1 ]; then
+                        aliasName=$2
+                    else
+                        aliasName=`basename "$appPath"`
+                    fi
+                    alias $aliasName="`echo $appPath | sed -e 's/ /\\\\ /g'`"
+                else
+                    echo bad appPath $appPath
+                fi
+            else
+                echo not enough args
+            fi
+        }
+        backup-mac() {
+            baseBackupDir=/mnt/backups/lwheat
+            if [ -d $baseBackupDir ]; then
+                dotList=".spacemacs .emacs.d .bashrc .gem .gitconfig .gitignore_global .gitmodules .hgrc .nmap .profile .pylintrc"
+                dirList="Documents Downloads bin tmp work"
+                fileList=""
+                for i in $dotList $fileList $dirList
+                do
+                    echo "backing up $i"
+                    rsync -az /Users/lwheat/$i $baseBackupDir
+                done
+            else
+                echo "$baseBackupDir not present. try mounting it?"
+            fi
+        }
+        brew-depend() {
+            brew list | while read cask; do echo -e -n "\033[1;34m$cask ->\033[0m"; brew deps $cask | awk '{printf(" %s ", $0)}'; echo ""; done
+        }
+        sync-master() {
+            echo "entering "${FUNCNAME}
+            echo "num "$#
+            echo "args "$@
+            declare arg1=$1
+            echo "arg1 "$arg1
+        }
+        #
+        # update colors used for ls command. default is "exfxcxdxbxegedabagacad"
+        # The color designators are as follows:
+        # a     black
+        # b     red
+        # c     green
+        # d     brown
+        # e     blue
+        # f     magenta
+        # g     cyan
+        # h     light grey
+        # A     bold black, usually shows up as dark grey
+        # B     bold red
+        # C     bold green
+        # D     bold brown, usually shows up as yellow
+        # E     bold blue
+        # F     bold magenta
+        # G     bold cyan
+        # H     bold light grey; looks like bright white
+        # x     default foreground or background
+        #
+        export LSCOLORS="Exfxcxdxbxegedabagacad"
         alias l='/bin/ls -alFG'
         alias l.='/bin/ls -dFG .*'
         alias ll='/bin/ls -lFG'
         alias ls='ls -G'
         alias lsusb="ioreg -p IOUSB -w 0"
+        #alias mount-bkup='sudo bash -c "mkdir -p /Volumes/backups && sudo mount_afp afp://@rtp-engnas01.ad.spirentcom.com/backups /Volumes/backups"'
+        #alias umount-bkup="diskutil umount /Volumes/backups"
+        alias mount-bkup='sudo bash -c "mkdir -p /mnt/backups && sudo mount -t nfs rtp-engnas01.ad.spirentcom.com:/c/backups /mnt/backups"'
+        alias umount-bkup="sudo umount /mnt/backups"
         alias unquarantine='xattr -d com.apple.quarantine'
-        [ -f "/Applications/VMware Fusion.app/Contents/Library/VMware OVF Tool/ovftool" ] && alias ovftool="/Applications/VMware\ Fusion.app/Contents/Library/VMware\ OVF\ Tool/ovftool"
-
+        alias-app "/Applications/VMware Fusion.app/Contents/Library/VMware OVF Tool/ovftool"
+        alias-app "/Applications/p4merge.app/Contents/MacOS/p4merge"
+        alias-app "/Applications/p4v.app/Contents/MacOS/p4v"
         # if docker-machine is installed, add alias to configure/remove environment so we can talk to it
         if [ ! -z "`which docker-machine`" ]; then
             alias docker-setenv='eval "$(docker-machine env)"'
             alias docker-rmenv='unset `printenv | grep ^DOCKER | cut -f1 -d=`'
         fi
+        # Spirent-specific stuff
+        if [ -d ~/OneDrive\ -\ Spirent\ Communications ]; then
+            alias fix-broken-links='for i in `cat broken-links`; do ln -sf `readlink $i | sed "s,/home/lwheat/work/intqemu,/Users/lwheat/work/integration,"` $i; done'
+        fi
+
         ;;
 esac
 
 ## Aliases - common
+alias checkforks='for i in `ls -1F | grep /`; do if [ -d $i/.git ]; then  cd $i; if [ `git rv | grep ^upstream | wc -l | tr -d " "` -gt 0 ]; then echo $i is a fork; echo "git pull upstream master && git push origin master"; else echo $i is not a fork; echo git pull origin master; fi; cd ..;else echo $i not a git repo; fi; done'
+alias cf2='for i in `ls -1F | grep /` ; do for j in `find $i -name .git`; do pushd `dirname $j` > /dev/null; pwd; if [ `git rv | grep ^upstream | wc -l | tr -d " "` -gt 0 ]; then echo $i is a fork; echo "git pull upstream master && git push origin master"; else echo $i is not a fork; echo git pull origin master; fi; popd > /dev/null; done; done'
+alias cf3='for i in `ls -1F | grep /` ; do for j in `find $i -name .git`; do pushd `dirname $j` > /dev/null; k=`git branch | grep \* | cut -d" " -f2`; if [ `git rv | grep ^upstream | wc -l | tr -d " "` -gt 0 ]; then echo `pwd` is a fork; echo "git pull upstream $k && git push origin $k"; else echo `pwd` is not a fork; echo git pull origin $k; fi; popd > /dev/null; done; done'
+alias checkmaster='for i in `ls -1F | grep /` ; do for j in `find $i -name .git`; do pushd `dirname $j` > /dev/null; [ "`git symbolic-ref --short HEAD`" != "master" ] && echo `pwd`" on branch "`git symbolic-ref --short HEAD`; popd > /dev/null; done; done'
 #alias emacs='emacs -bg black -fg white'
 alias lsd='/bin/ls -F | grep / | sed -e "s,/$,,"'
 alias lsdd='/bin/ls -Fd .[A-Z][a-z]* * | grep / | sed -e "s,/$,,"'
@@ -165,6 +243,8 @@ alias sha256='openssl dgst -sha256'
 alias ssh-nosave='ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
 alias scp-nosave='scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
 alias md5='openssl dgst -md5'
+alias syncforks='for i in `ls -1F | grep /`; do if [ -d $i/.git ]; then  cd $i; if [ `git rv | grep ^upstream | wc -l | tr -d " "` -gt 0 ]; then echo $i is a fork; git pull upstream master && git push origin master; else echo $i is not a fork; git pull origin master; fi; cd ..;else echo $i not a git repo; fi; done'
+alias sf2='for i in `ls -1F | grep /` ; do for j in `find $i -name .git`; do pushd `dirname $j` > /dev/null; pwd; if [ `git rv | grep ^upstream | wc -l | tr -d " "` -gt 0 ]; then echo $i is a fork; git pull upstream master && git push origin master; else echo $i is not a fork; git pull origin master; fi; popd > /dev/null; done; done'
 [ -f ~/bin/Table.jar -a -f ~/bin/TABLE.properties ] && alias table-build='java -jar ~/bin/Table.jar'
 alias unquarantine='xattr -d com.apple.quarantine'
 alias uuidhash='uuidgen | tr [A-Z] [a-z] | sed "s/-//g"'
