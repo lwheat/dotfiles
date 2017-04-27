@@ -72,7 +72,7 @@ fi
 ## Other look and feel
 
 # Colorized prompt
-if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+if [ -n "$(type -p tput)" ] && tput setaf 1 >&/dev/null; then
     PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[01;34m\] \w \[\033[00m\]\$ '
 else
     PS1="${debian_chroot:+($debian_chroot)}\u@\h \w \$ "
@@ -93,7 +93,9 @@ fi
 export GREP_OPTIONS='--color=auto'
 
 # Make less more friendly for non-text input files, see lesspipe(1)
-[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+if [ -n "$(type -p lesspipe)" ]; then
+    eval "$(SHELL=/bin/sh lesspipe)"
+fi
 export PAGER=less
 export MANPAGER=$PAGER
 
@@ -112,13 +114,11 @@ export P4CONFIG=.p4env
 # perforce-rtp.spirentcom.com:1999
 export P4PORT=10.28.50.70:1999
 
-[ -x /bin/stty ] && {
-    # Turn off stop (^S) control character
-    stty stop undef
+# Turn off stop (^S) control character
+stty stop undef
 
-    # Don't echo control characters
-    stty -echoctl
-}
+# Don't echo control characters
+stty -echoctl
 
 ## Aliases - OS specific
 case "$OSTYPE" in
@@ -134,8 +134,8 @@ case "$OSTYPE" in
         else
             alias pmotd='test -f /etc/motd && cat /etc/motd'
         fi
-        alias vncsetup="vncserver -geometry 1870x980 -alwaysshared :`id -u`"
-        alias vncstop="vncserver -kill :`id -u`"
+        alias startvnc="vncserver -geometry 1870x980 -alwaysshared :`id -u`"
+        alias stopvnc="vncserver -kill :`id -u`"
         ;;
 
     darwin*)
@@ -156,30 +156,8 @@ case "$OSTYPE" in
                 echo not enough args
             fi
         }
-        backup-mac() {
-            baseBackupDir=/mnt/backups/lwheat
-            if [ -d $baseBackupDir ]; then
-                dotList=".spacemacs .emacs.d .bashrc .gem .gitconfig .gitignore_global .gitmodules .hgrc .nmap .profile .pylintrc"
-                dirList="Documents Downloads bin tmp work"
-                fileList=""
-                for i in $dotList $fileList $dirList
-                do
-                    echo "backing up $i"
-                    rsync -az /Users/lwheat/$i $baseBackupDir
-                done
-            else
-                echo "$baseBackupDir not present. try mounting it?"
-            fi
-        }
         brew-depend() {
             brew list | while read cask; do echo -e -n "\033[1;34m$cask ->\033[0m"; brew deps $cask | awk '{printf(" %s ", $0)}'; echo ""; done
-        }
-        sync-master() {
-            echo "entering "${FUNCNAME}
-            echo "num "$#
-            echo "args "$@
-            declare arg1=$1
-            echo "arg1 "$arg1
         }
         #
         # update colors used for ls command. default is "exfxcxdxbxegedabagacad"
@@ -208,10 +186,6 @@ case "$OSTYPE" in
         alias ll='/bin/ls -lFG'
         alias ls='ls -G'
         alias lsusb="ioreg -p IOUSB -w 0"
-        #alias mount-bkup='sudo bash -c "mkdir -p /Volumes/backups && sudo mount_afp afp://@rtp-engnas01.ad.spirentcom.com/backups /Volumes/backups"'
-        #alias umount-bkup="diskutil umount /Volumes/backups"
-        alias mount-bkup='sudo bash -c "mkdir -p /mnt/backups && sudo mount -t nfs rtp-engnas01.ad.spirentcom.com:/c/backups /mnt/backups"'
-        alias umount-bkup="sudo umount /mnt/backups"
         alias unquarantine='xattr -d com.apple.quarantine'
         alias-app "/Applications/VMware Fusion.app/Contents/Library/VMware OVF Tool/ovftool"
         alias-app "/Applications/p4merge.app/Contents/MacOS/p4merge"
@@ -224,16 +198,112 @@ case "$OSTYPE" in
         # Spirent-specific stuff
         if [ -d ~/OneDrive\ -\ Spirent\ Communications ]; then
             alias fix-broken-links='for i in `cat broken-links`; do ln -sf `readlink $i | sed "s,/home/lwheat/work/intqemu,/Users/lwheat/work/integration,"` $i; done'
+            alias mount-bkup='sudo bash -c "mkdir -p /mnt/backups && sudo mount -t nfs rtp-engnas01.ad.spirentcom.com:/c/backups /mnt/backups"'
+            alias umount-bkup="sudo umount /mnt/backups"
+            backup-mac() {
+                baseBackupDir=/mnt/backups/individual-machines
+                fullBackupPath=$baseBackupDir/lwheat-mac
+                if [ -d $baseBackupDir ]; then
+                    mkdir -p $fullBackupPath || (echo Unable to create $fullBackupPath; exit 1)
+                    dotList=".spacemacs .emacs.d .spacemacs.local .bashrc .gem .gitconfig .gitignore_global .gitmodules .hgignore_global .hgrc .kube .minikube .nmap .npm .p4environ .profile .pylintrc .screenrc .telnetrc .tmux.conf .vim .viminfo"
+                    dirList="Documents Downloads bin tmp work"
+                    fileList=""
+                    for i in $dotList $fileList $dirList
+                    do
+                        [ -e $i ] && echo "backing up $i" || continue
+                        rsync -az /Users/lwheat/$i $fullBackupPath
+                    done
+                else
+                    echo "$baseBackupDir not present. try mounting it?"
+                fi
+            }
         fi
 
         ;;
 esac
 
+## git helpers - common
+#
+# sync an individual repo directory. it's a clone of a forked repo or
+# a clone of the repo itself
+#
+sync-repo-dir() {
+    dryRunArg=""
+    if [ $# -gt 0 ]; then
+        if [ "$1" == "-n" ]; then
+            dryRunArg=$1
+            shift
+        fi
+    fi
+    if [ $# -gt 0 ]; then
+        branchName="master"
+        dirName=$1
+        if [ $# -gt 1 ]; then
+            branchName=$2
+        fi
+        pushd $dirName > /dev/null
+        currentBranch=`git branch | grep \* | cut -d" " -f2-`
+        if [ ! -z "$currentBranch" ]; then
+            if [ "$currentBranch" = "$branchName" ]; then
+                if [ `git remote -v | grep ^upstream | wc -l | tr -d " "` -gt 0 ]; then
+                    echo "==== "$dirName"("$branchName") is a fork ===="
+                    [ -z "$dryRunArg" ] && git pull upstream $currentBranch && git push origin $currentBranch
+                else
+                    echo "==== "$dirName"("$branchName") is not a fork ===="
+                    [ -z "$dryRunArg" ] && git pull origin $currentBranch
+                fi
+            else
+                echo "$dirName, $currentBranch is current branch, not $branchName"
+            fi
+        else
+            echo "$dirName, cannot find current branch"
+        fi
+        popd > /dev/null
+    fi
+}
+
+#
+# find all the cloned git repos in the list of directories and sync each one
+#
+walk-git-tree() {
+    dryRunArg=""
+    if [ $# -gt 0 ]; then
+        if [ "$1" == "-n" ]; then
+            dryRunArg=$1
+            shift
+        fi
+    fi
+    if [ $# -gt 0 ]; then
+        dirList=$1
+        startDir=`pwd`
+        for i in $dirList ; do
+            for j in `find $i -name .git` ; do
+                sync-repo-dir $dryRunArg "`dirname $j`"
+            done
+        done
+    fi
+}
+
+#
+# sync all cloned repos under the passed in direcotry list or under all directories
+# in the current working directory.
+#
+sync-forks() {
+    dryRunArg=""
+    if [ $# -gt 0 ]; then
+        if [ "$1" == "-n" ]; then
+            dryRunArg=$1
+            shift
+        fi
+    fi
+    dirList=$@
+    if [ $# -eq 0 ]; then
+        dirList=`ls -1F | grep "/$" | sed -e 's,/$,,'`
+    fi
+    walk-git-tree $dryRunArg "$dirList"
+}
+
 ## Aliases - common
-alias checkforks='for i in `ls -1F | grep /`; do if [ -d $i/.git ]; then  cd $i; if [ `git rv | grep ^upstream | wc -l | tr -d " "` -gt 0 ]; then echo $i is a fork; echo "git pull upstream master && git push origin master"; else echo $i is not a fork; echo git pull origin master; fi; cd ..;else echo $i not a git repo; fi; done'
-alias cf2='for i in `ls -1F | grep /` ; do for j in `find $i -name .git`; do pushd `dirname $j` > /dev/null; pwd; if [ `git rv | grep ^upstream | wc -l | tr -d " "` -gt 0 ]; then echo $i is a fork; echo "git pull upstream master && git push origin master"; else echo $i is not a fork; echo git pull origin master; fi; popd > /dev/null; done; done'
-alias cf3='for i in `ls -1F | grep /` ; do for j in `find $i -name .git`; do pushd `dirname $j` > /dev/null; k=`git branch | grep \* | cut -d" " -f2`; if [ `git rv | grep ^upstream | wc -l | tr -d " "` -gt 0 ]; then echo `pwd` is a fork; echo "git pull upstream $k && git push origin $k"; else echo `pwd` is not a fork; echo git pull origin $k; fi; popd > /dev/null; done; done'
-alias checkmaster='for i in `ls -1F | grep /` ; do for j in `find $i -name .git`; do pushd `dirname $j` > /dev/null; [ "`git symbolic-ref --short HEAD`" != "master" ] && echo `pwd`" on branch "`git symbolic-ref --short HEAD`; popd > /dev/null; done; done'
 #alias emacs='emacs -bg black -fg white'
 alias lsd='/bin/ls -F | grep / | sed -e "s,/$,,"'
 alias lsdd='/bin/ls -Fd .[A-Z][a-z]* * | grep / | sed -e "s,/$,,"'
@@ -243,8 +313,6 @@ alias sha256='openssl dgst -sha256'
 alias ssh-nosave='ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
 alias scp-nosave='scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
 alias md5='openssl dgst -md5'
-alias syncforks='for i in `ls -1F | grep /`; do if [ -d $i/.git ]; then  cd $i; if [ `git rv | grep ^upstream | wc -l | tr -d " "` -gt 0 ]; then echo $i is a fork; git pull upstream master && git push origin master; else echo $i is not a fork; git pull origin master; fi; cd ..;else echo $i not a git repo; fi; done'
-alias sf2='for i in `ls -1F | grep /` ; do for j in `find $i -name .git`; do pushd `dirname $j` > /dev/null; pwd; if [ `git rv | grep ^upstream | wc -l | tr -d " "` -gt 0 ]; then echo $i is a fork; git pull upstream master && git push origin master; else echo $i is not a fork; git pull origin master; fi; popd > /dev/null; done; done'
 [ -f ~/bin/Table.jar -a -f ~/bin/TABLE.properties ] && alias table-build='java -jar ~/bin/Table.jar'
 alias unquarantine='xattr -d com.apple.quarantine'
 alias uuidhash='uuidgen | tr [A-Z] [a-z] | sed "s/-//g"'

@@ -4,29 +4,63 @@
 # see /usr/share/doc/bash/examples/startup-files for examples.
 # the files are located in the bash-doc package.
 
+# delete directory from path if present
+delete_path()
+{
+    local p d
+    p=":$1:"
+    d=":$PATH:"
+    d=${d//$p/:}
+    d=${d/#:/}
+    PATH=${d/%:/}
+}
+
+# if directory exists, add directory to end. delete if present already
+append_path()
+{
+    #[[ -d "$2" && ":$PATH:" != *":$2:"* ]] && eval "$1=\$$1:2"
+    [ -d "$2" ] && delete_path $2 && eval "$1=\$$1:2"
+}
+
+# if directory exists, add directory to beginning. delete if present already
+prepend_path()
+{
+    #[[ -d "$2" && ":$PATH:" != *":$2:"* ]] && eval "$1=$2:\$$1"
+    [ -d "$2" ] && delete_path $2 && eval "$1=$2:\$$1"
+}
+
 ## OS-specific environment setup
 case "$OSTYPE" in
     linux*)
-        export PATH=/usr/local/bin:$PATH
+        prepend_path PATH /usr/local/bin
+        #export PATH=/usr/local/bin:$PATH
         [ -f /opt/emacs/bin/emacs ] && export EDITOR=/opt/emacs/bin/emacs || export EDITOR=/usr/local/bin/emacs
         ;;
 
     darwin*)
-        export PATH=/usr/local/bin:$PATH
+        prepend_path PATH /usr/local/bin
+        #export PATH=/usr/local/bin:$PATH
         [ -f /usr/local/bin/emacs ] && export EDITOR=/usr/local/bin/emacs || export EDITOR=/opt/emacs/bin/emacs
         ;;
 esac
 
-export VISUAL=$EDITOR
+[ ! -z "$EDITOR" ] && export VISUAL=$EDITOR
 
 ## Prepend miscellaneous directories to PATH
-[ -d ~/bin ]                        && PATH=~/bin:$PATH
-[ -d ~/.cabal/bin ]                 && PATH=~/.cabal/bin:$PATH
-[ -d ~/work/go/bin ]                && PATH=~/work/go/bin:$PATH
-[ -d ~/Library/Haskell/bin ]        && PATH=~/Library/Haskell/bin:$PATH
-[ -d /usr/local/git ]               && PATH=/usr/local/git/bin:$PATH
-[ -d /usr/local/go ]                && PATH=/usr/local/go/bin:$PATH
-[ -d `dirname $EDITOR` ]            && PATH=`dirname $EDITOR`:$PATH
+#[ -d ~/bin ]                        && PATH=~/bin:$PATH
+#[ -d ~/.cabal/bin ]                 && PATH=~/.cabal/bin:$PATH
+#[ -d ~/work/go/bin ]                && PATH=~/work/go/bin:$PATH
+#[ -d ~/Library/Haskell/bin ]        && PATH=~/Library/Haskell/bin:$PATH
+#[ -d /usr/local/git ]               && PATH=/usr/local/git/bin:$PATH
+#[ -d /usr/local/go ]                && PATH=/usr/local/go/bin:$PATH
+#[ -d "`dirname $EDITOR`" ]          && PATH=`dirname $EDITOR`:$PATH
+prepend_path PATH ~/bin
+prepend_path PATH ~/.cabal/bin
+prepend_path PATH ~/work/go/bin
+prepend_path PATH ~/Library/Haskell/bin
+prepend_path PATH /usr/local/git
+prepend_path PATH /usr/local/go
+prepend_path PATH "`dirname $EDITOR`"
 
 ## Finally, append . to the PATH
 export PATH=$PATH:.
