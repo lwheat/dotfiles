@@ -190,6 +190,9 @@ case "$OSTYPE" in
         alias-app "/Applications/VMware Fusion.app/Contents/Library/VMware OVF Tool/ovftool"
         alias-app "/Applications/p4merge.app/Contents/MacOS/p4merge"
         alias-app "/Applications/p4v.app/Contents/MacOS/p4v"
+        alias-app "/Applications/ccollab_client/p4collab"
+        alias ssh-stc='ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o KexAlgorithms=diffie-hellman-group1-sha1'
+        alias scp-stc='scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o KexAlgorithms=diffie-hellman-group1-sha1'
         # if docker-machine is installed, add alias to configure/remove environment so we can talk to it
         if [ ! -z "`which docker-machine`" ]; then
             alias docker-setenv='eval "$(docker-machine env)"'
@@ -207,11 +210,12 @@ case "$OSTYPE" in
                     mkdir -p $fullBackupPath || (echo Unable to create $fullBackupPath; exit 1)
                     dotList=".spacemacs .emacs.d .spacemacs.local .bashrc .gem .gitconfig .gitignore_global .gitmodules .hgignore_global .hgrc .kube .minikube .nmap .npm .p4environ .profile .pylintrc .screenrc .telnetrc .tmux.conf .vim .viminfo"
                     dirList="Documents Downloads bin tmp work"
+                    oneDriveDir="OneDrive - Spirent Communications"
                     fileList=""
-                    for i in $dotList $fileList $dirList
+                    for i in $dotList $fileList $dirList "$oneDriveDir"
                     do
-                        [ -e $i ] && echo "backing up $i" || continue
-                        rsync -az /Users/lwheat/$i $fullBackupPath
+                        [ -e "$i" ] && echo "backing up $i" || continue
+                        rsync -az /Users/lwheat/"$i" $fullBackupPath
                     done
                 else
                     echo "$baseBackupDir not present. try mounting it?"

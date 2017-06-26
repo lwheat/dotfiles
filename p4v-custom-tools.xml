@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--perforce-xml-version=1.0-->
+<CustomToolDefList varName="customtooldeflist">
+ <CustomToolDef>
+  <Definition>
+   <Name>Code Collaborator - Create New Review with Changelist</Name>
+   <Command>/Applications/ccollab_client/p4collab</Command>
+   <Arguments>newreview $p $u $c %c</Arguments>
+  </Definition>
+  <Console>
+   <CloseOnExit>true</CloseOnExit>
+  </Console>
+  <AddToContext>true</AddToContext>
+ </CustomToolDef>
+ <CustomToolDef>
+  <Definition>
+   <Name>Code Collaborator - Attach Changelist to Existing Review</Name>
+   <Command>/Applications/ccollab_client/p4collab</Command>
+   <Arguments>addchangelist $p $u $c %c</Arguments>
+  </Definition>
+  <Console>
+   <CloseOnExit>true</CloseOnExit>
+  </Console>
+ </CustomToolDef>
+ <CustomToolDef>
+  <Definition>
+   <Name>SmartBear - New Review</Name>
+   <Command>/Applications/ccollab_client/ccollabgui.app/Contents/MacOS/JavaApplicationStub</Command>
+   <Arguments>--pause-on-error --scm perforce --p4port $p --p4user $u --p4client "emptyArgumentPrefix $c emptyArgumentSuffix" newreview ask %C</Arguments>
+  </Definition>
+  <Console>
+   <CloseOnExit>true</CloseOnExit>
+  </Console>
+ </CustomToolDef>
+ <CustomToolDef>
+  <Definition>
+   <Name>SmartBear - Add to Review</Name>
+   <Command>/Applications/ccollab_client/ccollabgui.app/Contents/MacOS/JavaApplicationStub</Command>
+   <Arguments>--pause-on-error --scm perforce --p4port $p --p4user $u --p4client "emptyArgumentPrefix $c emptyArgumentSuffix" addchangelist ask %C</Arguments>
+  </Definition>
+  <AddToContext>true</AddToContext>
+ </CustomToolDef>
+</CustomToolDefList>
