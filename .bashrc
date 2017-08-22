@@ -203,6 +203,8 @@ case "$OSTYPE" in
             alias fix-broken-links='for i in `cat broken-links`; do ln -sf `readlink $i | sed "s,/home/lwheat/work/intqemu,/Users/lwheat/work/integration,"` $i; done'
             alias mount-bkup='sudo bash -c "mkdir -p /mnt/backups && sudo mount -t nfs rtp-engnas01.ad.spirentcom.com:/c/backups /mnt/backups"'
             alias umount-bkup="sudo umount /mnt/backups"
+            alias mount-cross='sudo bash -c "mkdir -p /export/crosstools && sudo mount -t nfs rtp-engnas01.ad.spirentcom.com:/c/il-crosstools /export/crosstools"'
+            alias umount-cross="sudo umount /export/crosstools"
             backup-mac() {
                 baseBackupDir=/mnt/backups/individual-machines
                 fullBackupPath=$baseBackupDir/lwheat-mac
