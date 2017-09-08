@@ -226,6 +226,12 @@ case "$OSTYPE" in
         fi
 
         ;;
+    cygwin*)
+        p4() {
+            export PWD=`cygpath -wa .`
+            /cygdrive/c/Program\ Files/Perforce/p4.exe $@
+        }
+        ;;
 esac
 
 ## git helpers - common
@@ -313,7 +319,9 @@ sync-forks() {
 #alias emacs='emacs -bg black -fg white'
 alias lsd='/bin/ls -F | grep / | sed -e "s,/$,,"'
 alias lsdd='/bin/ls -Fd .[A-Z][a-z]* * | grep / | sed -e "s,/$,,"'
+alias lsnpm='npm list -g --depth=0'
 alias llsd='/bin/ls -l | grep ^d'
+alias p4head='p4 changes -m1 @`p4 client -o | grep ^Client: | cut -f2 -d"	"`'
 alias sha1='openssl dgst -sha1'
 alias sha256='openssl dgst -sha256'
 alias ssh-nosave='ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
