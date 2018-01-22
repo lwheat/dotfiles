@@ -1,51 +1,55 @@
 autoconf 2.69
 automake 1.15.1
-bazaar 2.7.0
-cdrtools 3.01_1
-clang-format 2017-06-22
-coreutils 8.27 8.28
+bazaar 2.7.0 2.7.0_1
+clang-format 2017-11-14 2017-06-22
+coreutils 8.28_1 8.27 8.29 8.28
 cscope 15.8b
 dmidecode 3.1
-emacs-mac emacs-25.2-z-mac-6.5
+emacs-mac emacs-25.3-mac-6.8
 flyway 4.2.0
-fontconfig 2.12.4
-freetype 2.8
+fontconfig 2.12.4 2.12.6
+freetype 2.8 2.8.1
 gd 2.2.4_2 2.2.5
-gdbm 1.13
-git 2.14.1
-gmp 6.1.2
+gdbm 1.13 1.14.1_1
+gettext 0.19.8.1
+git 2.16.1 2.14.2 2.15.1 2.15.0
 gnu-tar 1.29_1
 go 1.8.3
-grafana 4.4.3
+grafana 4.6.2 4.5.1 4.4.3
 graphviz 2.40.1
 icu4c 59.1
 influxdb 1.3.3 1.3.5
 ispell 3.4.00
 jpeg 9b
 jq 1.5_2
-libpng 1.6.31 1.6.32
-libtiff 4.0.8_3 4.0.8_4
+libidn2 2.0.4
+libpng 1.6.31 1.6.34 1.6.32
+libtiff 4.0.8_4 4.0.8_3
 libtool 2.4.6_1
+libunistring 0.9.8
 lzo 2.10
-mercurial 4.3.1
+mercurial 4.4.2_1 4.4 4.4.2
+mosh 1.3.2_1 1.3.2_2
 nmap 7.60
-node 8.4.0
+node 8.5.0 8.4.0
 oniguruma 6.5.0 6.6.1
-openssl 1.0.2l
-openssl@1.1 1.1.0f
+openssl 1.0.2n 1.0.2l 1.0.2m
+openssl@1.1 1.1.0g_1 1.1.0f
 p7zip 16.02
-pandoc 1.19.2.1 1.19.2.2
+pandoc 1.19.2.2 1.19.2.4
 phantomjs 2.1.1
 phantomjs@1.92 1.9.2
 pkg-config 0.29.2
 postgresql@9.5 9.5.8 9.5.9
-python 2.7.13_1
+protobuf 3.4.1 3.5.0.1
+python 2.7.14_2 2.7.14 2.7.13_1
 readline 7.0.3_1
 rsync 3.1.2
-scons 2.5.1
-sqlite 3.20.0 3.20.1
+scons 3.0.1 3.0.0 2.5.1
+shellcheck 0.4.7
+sqlite 3.21.0 3.20.1 3.20.0
 swagger-codegen 2.2.3
-texinfo 6.4
-webp 0.6.0_2
-wget 1.19.1_1
+texinfo 6.5 6.4
+webp 0.6.0_2 0.6.1
+wget 1.19.2 1.19.1_1 1.19.4
 xz 5.2.3

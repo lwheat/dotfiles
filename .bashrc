@@ -231,6 +231,7 @@ case "$OSTYPE" in
             export PWD=`cygpath -wa .`
             /cygdrive/c/Program\ Files/Perforce/p4.exe $@
         }
+        [ -f /cygdrive/c/Program\ Files/Notepad++/notepad++.exe ] && alias np++='/cygdrive/c/Program\ Files/Notepad++/notepad++.exe'
         ;;
 esac
 
