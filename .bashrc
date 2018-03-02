@@ -205,6 +205,12 @@ case "$OSTYPE" in
             alias umount-bkup="sudo umount /mnt/backups"
             alias mount-cross='sudo bash -c "mkdir -p /export/crosstools && sudo mount -t nfs rtp-engnas01.ad.spirentcom.com:/c/il-crosstools /export/crosstools"'
             alias umount-cross="sudo umount /export/crosstools"
+            alias mount-isos='sudo bash -c "mkdir -p /mnt/isos && sudo mount -t nfs rtp-engnas01.ad.spirentcom.com:/c/isos /mnt/isos"'
+            alias umount-isos="sudo umount /mnt/isos"
+            alias mount-mcelroy='sudo bash -c "mkdir -p /mnt/mcelroy && sudo mount -t nfs mcelroy.ad.spirentcom.com:/export/archive/pv /mnt/mcelroy"'
+            alias umount-mcelroy="sudo umount /mnt/mcelroy"
+            alias mount-martin='sudo bash -c "mkdir -p /mnt/martin && sudo mount -t nfs martin.ad.spirentcom.com:/export/archive/pv /mnt/martin"'
+            alias umount-martin="sudo umount /mnt/martin"
             backup-mac() {
                 baseBackupDir=/mnt/backups/individual-machines
                 fullBackupPath=$baseBackupDir/lwheat-mac
