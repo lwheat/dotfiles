@@ -191,6 +191,7 @@ case "$OSTYPE" in
         alias-app "/Applications/p4merge.app/Contents/MacOS/p4merge"
         alias-app "/Applications/p4v.app/Contents/MacOS/p4v"
         alias-app "/Applications/ccollab_client/p4collab"
+        #alias-app "/Applications/VirtualBox.app/Contents/MacOS/VBoxManage"
         alias ssh-stc='ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o KexAlgorithms=diffie-hellman-group1-sha1'
         alias scp-stc='scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o KexAlgorithms=diffie-hellman-group1-sha1'
         # if docker-machine is installed, add alias to configure/remove environment so we can talk to it
