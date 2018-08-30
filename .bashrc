@@ -120,6 +120,21 @@ stty stop undef
 # Don't echo control characters
 stty -echoctl
 
+# add private ssh keys to the authentication daemon, if present
+add-ssh-keys() {
+    if [ -d ~/.ssh ]; then
+        if [ -z "`ssh-add -l`" ]; then
+            echo "adding keys to ssh-agent"
+            ssh-add
+            if [ $? -ne 0 ]; then
+                echo "problem adding keys to ssh-agent"
+            fi
+        else
+            echo "keys present in ssh-agent already"
+        fi
+    fi
+}
+
 ## Aliases - OS specific
 case "$OSTYPE" in
     linux*)
@@ -192,8 +207,6 @@ case "$OSTYPE" in
         alias-app "/Applications/p4v.app/Contents/MacOS/p4v"
         alias-app "/Applications/ccollab_client/p4collab"
         #alias-app "/Applications/VirtualBox.app/Contents/MacOS/VBoxManage"
-        alias ssh-stc='ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o KexAlgorithms=diffie-hellman-group1-sha1'
-        alias scp-stc='scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o KexAlgorithms=diffie-hellman-group1-sha1'
         # if docker-machine is installed, add alias to configure/remove environment so we can talk to it
         if [ ! -z "`which docker-machine`" ]; then
             alias docker-setenv='eval "$(docker-machine env)"'
@@ -212,6 +225,9 @@ case "$OSTYPE" in
             alias umount-mcelroy="sudo umount /mnt/mcelroy"
             alias mount-martin='sudo bash -c "mkdir -p /mnt/martin && sudo mount -t nfs martin.ad.spirentcom.com:/export/archive/pv /mnt/martin"'
             alias umount-martin="sudo umount /mnt/martin"
+            alias ssh-stc='ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o KexAlgorithms=diffie-hellman-group1-sha1,diffie-hellman-group14-sha1'
+            alias scp-stc='scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o KexAlgorithms=diffie-hellman-group1-sha1,diffie-hellman-group14-sha1'
+            alias ssh-chassis='ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o KexAlgorithms=diffie-hellman-group1-sha1,diffie-hellman-group14-sha1 -o HostKeyAlgorithms=+ssh-dss'
             backup-mac() {
                 baseBackupDir=/mnt/backups/individual-machines
                 fullBackupPath=$baseBackupDir/lwheat-mac
@@ -223,9 +239,10 @@ case "$OSTYPE" in
                     fileList=""
                     for i in $dotList $fileList $dirList "$oneDriveDir"
                     do
-                        [ -e "$i" ] && echo "backing up $i" || continue
+                        [ -e "$i" ] && echo `date "+ %b %d %H:%M:%S"`" - backing up $i" || continue
                         rsync -az /Users/lwheat/"$i" $fullBackupPath
                     done
+                    echo `date "+ %b %d %H:%M:%S"`" - done"
                 else
                     echo "$baseBackupDir not present. try mounting it?"
                 fi
@@ -239,6 +256,47 @@ case "$OSTYPE" in
             /cygdrive/c/Program\ Files/Perforce/p4.exe $@
         }
         [ -f /cygdrive/c/Program\ Files/Notepad++/notepad++.exe ] && alias np++='/cygdrive/c/Program\ Files/Notepad++/notepad++.exe'
+        #[ -f /drives/c/Program\ Files/Notepad++/notepad++.exe ] && alias np++='/drives/c/Program\ Files/Notepad++/notepad++.exe'
+        alias mount-bkup="mkdir -p /backups && mount //rtp-engnas01.ad.spirentcom.com/backups /backups"
+        alias umount-bkup="umount /backups"
+        backup-devvm() {
+            if [ -L /cygdrive ] && [ -d /drives ]; then
+                rootDirectoryPath=/drives/c
+            elif [ -d /cygdrive ]; then
+                rootDirectoryPath=/cygdrive/c
+            else
+                echo "No root directory detected"
+                return 1
+            fi
+            rootDirectoryPath=/drives/c
+            baseBackupDir=/backups/individual-machines
+            fullBackupPath=$baseBackupDir/lwheat-devvm
+            if [ -d $baseBackupDir ]; then
+                currentUmask=`umask`
+                umask g=rwx,o=rwx
+                mkdir -p $fullBackupPath || (echo Unable to create $fullBackupPath; return 1)
+                pushd $rootDirectoryPath >/dev/null
+                #dotList=".spacemacs .emacs.d .spacemacs.local .bashrc .gem .gitconfig .gitignore_global .gitmodules .hgignore_global .hgrc .kube .minikube .nmap .npm .p4environ .profile .pylintrc .screenrc .telnetrc .tmux.conf .vim .viminfo"
+                dotList=".profile .viminfo"
+                #dirList="Documents Downloads bin tmp work"
+                dirList="bin tmp dev"
+                #oneDriveDir="Users/spirent/OneDrive - Spirent Communications"
+                oneDriveDir=""
+                fileList=""
+                #done
+                for i in $dotList $fileList $dirList "$oneDriveDir"
+                do
+                    [ -e "$i" ] && echo `date "+ %b %d %H:%M:%S"`" - backing up $i" || continue
+                    #rsync -az /Users/lwheat/"$i" $fullBackupPath
+                    rsync -az --exclude 'Debug/' --exclude 'Debug_x64/' --exclude 'Release/' --exclude='Release_x64/' "$i" $fullBackupPath
+                done
+                echo `date "+ %b %d %H:%M:%S"`" - done"
+                popd >/dev/null
+                umask $currentUmask
+            else
+                echo "$baseBackupDir not present. try mounting it?"
+            fi
+        }
         ;;
 esac
 

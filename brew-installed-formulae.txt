@@ -1,58 +1,65 @@
 autoconf 2.69
-automake 1.15.1 1.16.1
-bazaar 2.7.0 2.7.0_1
-clang-format 2018-01-11 2017-11-14
-coreutils 8.28_1 8.29
+automake 1.15.1 1.16.1 1.16.1_1
+bazaar 2.7.0_1
+clang-format 2018-04-24
+coreutils 8.30
 cscope 15.8b
 dmidecode 3.1
-emacs-mac emacs-25.3-mac-6.8
+emacs-mac emacs-26.1-z-mac-7.1
 flyway 4.2.0
-fontconfig 2.12.4 2.12.6
-freetype 2.8 2.8.1
-gd 2.2.4_2 2.2.5
-gdbm 1.13 1.14.1_1
+fontconfig 2.13.0
+freetype 2.9.1
+gd 2.2.5
+gdbm 1.17
 gettext 0.19.8.1
-git 2.16.3 2.17.0
-gnu-sed 4.5 4.4
-gnu-tar 1.30 1.29_1
+git 2.18.0
+gmp 6.1.2_2
+gnu-sed 4.5
+gnu-tar 1.30
+gnutls 3.5.19
 go 1.8.3 1.10.1
-grafana 4.6.3 4.6.2 4.5.1 4.4.3
+grafana 4.6.3
 graphviz 2.40.1
-icu4c 59.1
-influxdb 1.5.1 1.3.5
+icu4c 61.1 62.1 59.1
+influxdb 1.5.1 1.3.5 1.6.0
 ispell 3.4.00
-jpeg 9b
-jq 1.5_2 1.5_3
-libidn2 2.0.4
-libpng 1.6.34 1.6.32
-libtiff 4.0.8_4 4.0.8_3
+jfrog-cli-go 1.19.1 1.17.1
+jpeg 9b 9c
+jq 1.5_3
+libffi 3.2.1
+libidn2 2.0.5
+libpng 1.6.35
+libtasn1 4.13
+libtiff 4.0.9_4
 libtool 2.4.6_1
-libunistring 0.9.8
+libunistring 0.9.10
 lzo 2.10
-mercurial 4.5.2 4.4.2_1
-mosh 1.3.2_1 1.3.2_2
+mercurial 4.7
+mosh 1.3.2_3
+nettle 3.4
 nmap 7.60 7.70
-node 8.5.0 8.4.0
-oniguruma 6.6.1 6.8.1
-openssl 1.0.2o_1 1.0.2n
+node@8 8.11.4 8.11.2 8.11.3_1
+oniguruma 6.8.2
+openssl 1.0.2o_1 1.0.2n 1.0.2p 1.0.2o_2
 openssl@1.1 1.1.0g_1 1.1.0h
-p7zip 16.02_1 16.02
-pandoc 2.1.3 1.19.2.4
+p11-kit 0.23.10 0.23.11 0.23.14 0.23.12
+p7zip 16.02_1
+pandoc 2.2.3.2 2.2.3
 phantomjs 2.1.1
 phantomjs@1.92 1.9.2
 pkg-config 0.29.2
-postgresql@9.5 9.5.12 9.5.9
-protobuf 3.5.1_1 3.5.0.1
+postgresql@9.5 9.5.13 9.5.14
+protobuf 3.6.0
 python 2.7.14_2 2.7.14
-python@2 2.7.14_3
-readline 7.0.3_1
-rsync 3.1.2 3.1.3_1
-scons 3.0.1 3.0.0 2.5.1
-shellcheck 0.4.7
-sqlite 3.22.0 3.23.0
-swagger-codegen 2.3.1 2.2.3
+python@2 2.7.15_1 2.7.15
+readline 7.0.5
+rsync 3.1.3_1
+scons 3.0.1
+shellcheck 0.5.0
+sqlite 3.24.0
+swagger-codegen 2.3.1
 telnet 54.50.1
-texinfo 6.5 6.4
-webp 0.6.0_2 0.6.1
-wget 1.19.4_1
-xz 5.2.3
+texinfo 6.5
+webp 1.0.0
+wget 1.19.5
+xz 5.2.4
