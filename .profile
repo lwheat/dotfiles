@@ -79,3 +79,4 @@ export PYTHONPATH
 export GO15VENDOREXPERIMENT=1
 
 ### end ~/.profile
+if [ -e /Users/lwheat/.nix-profile/etc/profile.d/nix.sh ]; then . /Users/lwheat/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer

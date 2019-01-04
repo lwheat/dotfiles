@@ -381,6 +381,62 @@ sync-forks() {
     walk-git-tree $dryRunArg "$dirList"
 }
 
+#
+# start STCv VMs on QManager
+#
+start-stc-vm() {
+    if [ -f ~/bin/start_stc_vm.py ]; then
+        stcVmVersion=""
+        if [ $# -gt 0 ]; then
+            stcVmVersion=$1
+            python ~/bin/start_stc_vm.py lwheat "#${stcVmVersion}" $((60*24*14))
+        else
+            echo "STCv version number missing"
+        fi
+    else
+        echo "start script ~/bin/start_stc_vm.py not found"
+    fi
+}
+
+#
+# start a generic VM on QManager
+#
+start-generic-vm() {
+    if [ -f ~/bin/start_generic_vm.py ]; then
+        vmPath=""
+        if [ $# -gt 0 ]; then
+            vmPath=$1
+            python ~/bin/start_generic_vm.py lwheat "${vmPath}"
+        else
+            echo "VM path missing"
+        fi
+    else
+        echo "start script ~/bin/start_generic_vm.py not found"
+    fi
+}
+
+#
+# Check to see if the specified VM(s) have obtained an IP address
+#
+wait-for-vms() {
+    if [ -f ~/bin/get_vm_ip.py ]; then
+        vmIds=""
+        if [ $# -gt 0 ]; then
+            vmIds=$@
+            while [ true ]; do
+                for i in ${vmIds}; do
+                    python ~/bin/get_vm_ip.py $i
+                done
+                sleep 5
+            done
+        else
+            echo "VM ID(s) missing"
+        fi
+    else
+        echo "start script ~/bin/get_vm_ip.py not found"
+    fi
+}
+
 ## Aliases - common
 #alias emacs='emacs -bg black -fg white'
 alias lsd='/bin/ls -F | grep / | sed -e "s,/$,,"'
@@ -401,5 +457,8 @@ alias z='clear'
 
 ## Local environment customization
 [ -f ~/.bashrc.local ] && . ~/.bashrc.local
+
+## add bash completetion customizations
+[ -f /usr/local/etc/bash_completion ] && . /usr/local/etc/bash_completion
 
 ### end ~/.bashrc

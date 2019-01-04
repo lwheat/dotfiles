@@ -27,8 +27,10 @@ values."
      auto-completion
      (c-c++ :variables
             c-c++-default-mode-for-headers 'c++-mode
-            c-c++-enable-clang-support t)
+            c-c++-enable-clang-support t
+            flycheck-clang-language-standard "c++11")
      cscope
+     csharp
      mylocal-ibuffer
      dockerfile
      emacs-lisp
@@ -41,7 +43,8 @@ values."
      (ibuffer :variables
               ibuffer-group-buffers-by nil)
      javascript
-     markdown
+     (markdown :variables
+               markdown-live-preview-engine 'vmd)
      org
      osx
      (python :variables
@@ -329,6 +332,7 @@ layers configuration. You are free to put any user code."
 
   ;; open log files in text-mode
   (add-to-list 'auto-mode-alist '("\\.log\\'" . text-mode))
+  ;;(add-to-list 'auto-mode-alist '("\\.tcl\\'" . tcl-mode))
 
   ;; scroll a single line when the cursor get to the top of the window
   (setq scroll-step 1)

@@ -1,65 +1,70 @@
 autoconf 2.69
-automake 1.15.1 1.16.1 1.16.1_1
+automake 1.16.1 1.16.1_1
+bash-completion 1.3_3
 bazaar 2.7.0_1
-clang-format 2018-04-24
+boost 1.68.0
+clang-format 2018-10-04 2018-08-24
+cmake 3.13.2
 coreutils 8.30
+cpprestsdk 2.10.8
 cscope 15.8b
 dmidecode 3.1
-emacs-mac emacs-26.1-z-mac-7.1
+emacs-mac emacs-26.1-z-mac-7.4
 flyway 4.2.0
-fontconfig 2.13.0
+fontconfig 2.13.1
 freetype 2.9.1
 gd 2.2.5
-gdbm 1.17
+gdbm 1.18.1 1.18 1.17
 gettext 0.19.8.1
-git 2.18.0
+git 2.20.1
 gmp 6.1.2_2
-gnu-sed 4.5
-gnu-tar 1.30
-gnutls 3.5.19
-go 1.8.3 1.10.1
+gnu-sed 4.7
+gnu-tar 1.31
+gnutls 3.6.5
+go 1.10.1
 grafana 4.6.3
 graphviz 2.40.1
-icu4c 61.1 62.1 59.1
+icu4c 63.1
 influxdb 1.5.1 1.3.5 1.6.0
 ispell 3.4.00
 jfrog-cli-go 1.19.1 1.17.1
 jpeg 9b 9c
-jq 1.5_3
+jq 1.5_3 1.6
 libffi 3.2.1
 libidn2 2.0.5
-libpng 1.6.35
+libpng 1.6.36 1.6.35
 libtasn1 4.13
-libtiff 4.0.9_4
+libtiff 4.0.9_4 4.0.10
 libtool 2.4.6_1
 libunistring 0.9.10
 lzo 2.10
-mercurial 4.7
-mosh 1.3.2_3
-nettle 3.4
+mercurial 4.8.1
+mosh 1.3.2_4
+nettle 3.4 3.4.1
 nmap 7.60 7.70
-node@8 8.11.4 8.11.2 8.11.3_1
-oniguruma 6.8.2
-openssl 1.0.2o_1 1.0.2n 1.0.2p 1.0.2o_2
-openssl@1.1 1.1.0g_1 1.1.0h
-p11-kit 0.23.10 0.23.11 0.23.14 0.23.12
+node@8 8.11.4 8.14.0 8.11.3_1 8.12.0
+oniguruma 6.9.0 6.8.2
+openssl 1.0.2o_1 1.0.2n 1.0.2p 1.0.2o_2 1.0.2q
+openssl@1.1 1.1.1a 1.1.0g_1 1.1.0h
+p11-kit 0.23.14 0.23.12
 p7zip 16.02_1
 pandoc 2.2.3.2 2.2.3
+pcre2 10.32
 phantomjs 2.1.1
 phantomjs@1.92 1.9.2
 pkg-config 0.29.2
 postgresql@9.5 9.5.13 9.5.14
-protobuf 3.6.0
-python 2.7.14_2 2.7.14
+protobuf 3.6.1.3
+python 3.7.1 2.7.14_2 2.7.14
 python@2 2.7.15_1 2.7.15
 readline 7.0.5
 rsync 3.1.3_1
 scons 3.0.1
-shellcheck 0.5.0
-sqlite 3.24.0
+shellcheck 0.5.0 0.6.0_1
+sqlite 3.26.0
 swagger-codegen 2.3.1
-telnet 54.50.1
+telnet 60 54.50.1
 texinfo 6.5
-webp 1.0.0
-wget 1.19.5
+webp 1.0.0 1.0.1
+wget 1.20.1
 xz 5.2.4
