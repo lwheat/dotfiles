@@ -221,9 +221,9 @@ case "$OSTYPE" in
             alias umount-cross="sudo umount /export/crosstools"
             alias mount-isos='sudo bash -c "mkdir -p /mnt/isos && sudo mount -t nfs rtp-engnas01.ad.spirentcom.com:/c/isos /mnt/isos"'
             alias umount-isos="sudo umount /mnt/isos"
-            alias mount-mcelroy='sudo bash -c "mkdir -p /mnt/mcelroy && sudo mount -t nfs mcelroy.ad.spirentcom.com:/export/archive/pv /mnt/mcelroy"'
+            alias mount-mcelroy='sudo bash -c "mkdir -p /mnt/mcelroy && sudo mount -o resvport -t nfs mcelroy.ad.spirentcom.com:/export/archive/pv /mnt/mcelroy"'
             alias umount-mcelroy="sudo umount /mnt/mcelroy"
-            alias mount-martin='sudo bash -c "mkdir -p /mnt/martin && sudo mount -t nfs martin.ad.spirentcom.com:/export/archive/pv /mnt/martin"'
+            alias mount-martin='sudo bash -c "mkdir -p /mnt/martin && sudo mount -o resvport -t nfs martin.ad.spirentcom.com:/export/archive/pv /mnt/martin"'
             alias umount-martin="sudo umount /mnt/martin"
             alias ssh-stc='ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o KexAlgorithms=diffie-hellman-group1-sha1,diffie-hellman-group14-sha1'
             alias scp-stc='scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o KexAlgorithms=diffie-hellman-group1-sha1,diffie-hellman-group14-sha1'
@@ -389,7 +389,8 @@ start-stc-vm() {
         stcVmVersion=""
         if [ $# -gt 0 ]; then
             stcVmVersion=$1
-            python ~/bin/start_stc_vm.py lwheat "#${stcVmVersion}" $((60*24*14))
+            shift
+            python ~/bin/start_stc_vm.py lwheat "#${stcVmVersion}" $((60*24*14)) "$@"
         else
             echo "STCv version number missing"
         fi
@@ -434,6 +435,21 @@ wait-for-vms() {
         fi
     else
         echo "start script ~/bin/get_vm_ip.py not found"
+    fi
+}
+
+#
+# Reset TTL for all my VMs
+#
+reset-vm-ttls() {
+    if [ -f ~/bin/get_active_vms.py ] && [ -f ~/bin/reset_vm_lifetime.py ]; then
+        for i in `python ~/bin/get_active_vms.py`
+        do
+            echo "resetting ttl for vm "$i
+            python ~/bin/reset_vm_lifetime.py lwheat $i
+        done
+    else
+        echo "start scripts ~/bin/get_active_vms.py and reset_vm_lifetimes.py not found"
     fi
 }
 
