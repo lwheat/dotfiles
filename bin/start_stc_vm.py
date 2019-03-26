@@ -91,6 +91,7 @@ import sys
 qmanagerLocation = 'rtp'
 qm = xmlrpclib.ServerProxy('http://qmanager.%s.ci.spirentcom.com:8080' % (qmanagerLocation),
                            allow_none=True)
+#qm = xmlrpclib.ServerProxy('http://syst-qmanager.calenglab.spirentcom.com:8080', allow_none=True)
 
 # Check that command-line arguments are given.
 argc = len(sys.argv)
@@ -112,7 +113,26 @@ vm_mem = 2048 * (len(vlan_ids) if vlan_ids != None else 1)
 #print '\nCalling start_vm() to start VM instances on %s QManager' % (qmanagerLocation.upper())
 
 try:
-    vm_ids = qm.start_stc_vm(user_name, vm_image, ttl_minutes, False, "stc vm", 2, None, True, vlan_ids, vm_mem)
+    #vm_ids = qm.start_stc_vm(user_name, vm_image, ttl_minutes, False, "stc vm", 2, None, True, vlan_ids, vm_mem)
+    vm_ids = qm.start_stc_vm(user_name,
+                             vm_image,
+                             ttl_minutes,
+                             False,        # use socket
+                             "stc vm",     # vm description
+                             2,            # number of instances
+                             None,         # host id
+                             True,         # share vlan
+                             vlan_ids,     # vlan IDs
+                             vm_mem,       # memory per VM
+                             1,            # number of cores per VM
+                             False,        # use external network interface
+                             '',
+                             '',
+                             '',
+                             '',
+                             '',
+                             '',
+                             'speed:10M')  # cloud-init params
     #print 'Started new vm instances:\n  %s' % ('\n  '.join(vm_ids),)
     print ' '.join(vm_ids)
 except Exception as ex:

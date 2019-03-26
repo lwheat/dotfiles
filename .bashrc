@@ -445,8 +445,11 @@ reset-vm-ttls() {
     if [ -f ~/bin/get_active_vms.py ] && [ -f ~/bin/reset_vm_lifetime.py ]; then
         for i in `python ~/bin/get_active_vms.py`
         do
-            echo "resetting ttl for vm "$i
-            python ~/bin/reset_vm_lifetime.py lwheat $i
+            #echo "resetting ttl for vm "$i
+            #python ~/bin/reset_vm_lifetime.py lwheat $i
+            vmInfo=(${i//:/ })
+            echo "resetting ttl for vm "${vmInfo[0]}" - "${vmInfo[1]}
+            python ~/bin/reset_vm_lifetime.py lwheat ${vmInfo[0]}
         done
     else
         echo "start scripts ~/bin/get_active_vms.py and reset_vm_lifetimes.py not found"
