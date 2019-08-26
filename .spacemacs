@@ -28,7 +28,7 @@ values."
      (c-c++ :variables
             c-c++-default-mode-for-headers 'c++-mode
             c-c++-enable-clang-support t
-            flycheck-clang-language-standard "c++11")
+            flycheck-clang-language-standard "c++14")
      cscope
      csharp
      mylocal-ibuffer
@@ -268,7 +268,7 @@ in `dotspacemacs/user-config'."
 
   (defun my-cc-coding-indent ()
     (interactive)
-    (c-set-style "k&r")
+    (c-set-style "stroustrup")
     (cscope-setup)
     )
 

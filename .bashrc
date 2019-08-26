@@ -63,6 +63,7 @@ fi
 ## Other environment setup
 [ -d /usr/local/go ] && export GOROOT=/usr/local/go
 [ -d ~/work/go ] && export GOPATH=~/work/go
+[ -d ~/work/go/bin ] && export GOBIN=~/work/go/bin
 
 ## set orion build/test options
 #export GINKGO_FOCUS=data make aat
