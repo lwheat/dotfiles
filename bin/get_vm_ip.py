@@ -31,7 +31,9 @@ DESCRIPTION:
 import xmlrpclib
 import sys
 
-qm = xmlrpclib.ServerProxy('http://qmanager.rtp.ci.spirentcom.com:8080')
+#qmanagerLocation = 'cal'
+qmanagerLocation = 'rtp'
+qm = xmlrpclib.ServerProxy('http://qmanager.%s.ci.spirentcom.com:8080' % (qmanagerLocation))
 
 # Check that command-line argument was given.
 if len(sys.argv) < 2:

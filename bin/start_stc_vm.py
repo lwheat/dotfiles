@@ -88,6 +88,7 @@ DESCRIPTION:
 import xmlrpclib
 import sys
 
+#qmanagerLocation = 'cal'
 qmanagerLocation = 'rtp'
 qm = xmlrpclib.ServerProxy('http://qmanager.%s.ci.spirentcom.com:8080' % (qmanagerLocation),
                            allow_none=True)
