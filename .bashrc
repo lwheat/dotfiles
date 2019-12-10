@@ -60,11 +60,6 @@ if [ "$TERM" = "xterm" ] ; then
     fi
 fi
 
-## Other environment setup
-[ -d /usr/local/go ] && export GOROOT=/usr/local/go
-[ -d ~/work/go ] && export GOPATH=~/work/go
-[ -d ~/work/go/bin ] && export GOBIN=~/work/go/bin
-
 ## set orion build/test options
 #export GINKGO_FOCUS=data make aat
 #export SUITE_FOCUS=local
@@ -222,7 +217,7 @@ case "$OSTYPE" in
             alias umount-cross="sudo umount /export/crosstools"
             alias mount-isos='sudo bash -c "mkdir -p /mnt/isos && sudo mount -t nfs rtp-engnas01.ad.spirentcom.com:/c/isos /mnt/isos"'
             alias umount-isos="sudo umount /mnt/isos"
-            alias mount-mcelroy='sudo bash -c "mkdir -p /mnt/mcelroy && sudo mount -o resvport -t nfs mcelroy.ad.spirentcom.com:/export/archive/pv /mnt/mcelroy"'
+            alias mount-mcelroy='sudo bash -c "mkdir -p /mnt/mcelroy && sudo mount -o resvport -t nfs mcelroy.spirentcom.com:/export/archive/pv /mnt/mcelroy"'
             alias umount-mcelroy="sudo umount /mnt/mcelroy"
             alias mount-martin='sudo bash -c "mkdir -p /mnt/martin && sudo mount -o resvport -t nfs martin.ad.spirentcom.com:/export/archive/pv /mnt/martin"'
             alias umount-martin="sudo umount /mnt/martin"
@@ -446,8 +441,6 @@ reset-vm-ttls() {
     if [ -f ~/bin/get_active_vms.py ] && [ -f ~/bin/reset_vm_lifetime.py ]; then
         for i in `python ~/bin/get_active_vms.py`
         do
-            #echo "resetting ttl for vm "$i
-            #python ~/bin/reset_vm_lifetime.py lwheat $i
             vmInfo=(${i//:/ })
             echo "resetting ttl for vm "${vmInfo[0]}" - "${vmInfo[1]}
             python ~/bin/reset_vm_lifetime.py lwheat ${vmInfo[0]}
