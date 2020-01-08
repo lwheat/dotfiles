@@ -153,6 +153,11 @@ case "$OSTYPE" in
         alias-app() {
             if [ $# -gt 0 ]; then
                 appPath="$1"
+                if [ $# -gt 1 ] && [ "$2" = "-q" ]; then
+                    noisyAdd=0
+                else
+                    noisyAdd=1
+                fi
                 if [ -f "$appPath" -a -x "$appPath" ]; then
                     if [ $# -gt 1 ]; then
                         aliasName=$2
@@ -161,7 +166,9 @@ case "$OSTYPE" in
                     fi
                     alias $aliasName="`echo $appPath | sed -e 's/ /\\\\ /g'`"
                 else
-                    echo bad appPath $appPath
+                    if [ $noisyAdd -gt 0 ]; then
+                        echo bad appPath $appPath
+                    fi
                 fi
             else
                 echo not enough args
@@ -192,6 +199,7 @@ case "$OSTYPE" in
         # x     default foreground or background
         #
         export LSCOLORS="Exfxcxdxbxegedabagacad"
+        [ `sw_vers -productVersion | sed -e 's/^[0-9]*\.//;s/\.[0-9]*$//'` -ge 15 ] && export BASH_SILENCE_DEPRECATION_WARNING=1
         alias l='/bin/ls -alFG'
         alias l.='/bin/ls -dFG .*'
         alias ll='/bin/ls -lFG'
@@ -200,9 +208,9 @@ case "$OSTYPE" in
         alias unquarantine='xattr -d com.apple.quarantine'
         alias-app "/Applications/VMware Fusion.app/Contents/Library/VMware OVF Tool/ovftool"
         alias-app "/Applications/p4merge.app/Contents/MacOS/p4merge"
-        alias-app "/Applications/p4v.app/Contents/MacOS/p4v"
-        alias-app "/Applications/ccollab_client/p4collab"
-        #alias-app "/Applications/VirtualBox.app/Contents/MacOS/VBoxManage"
+        alias-app "/Applications/p4v.app/Contents/MacOS/p4v" -q
+        alias-app "/Applications/ccollab_client/p4collab" -q
+        alias-app "/Applications/VirtualBox.app/Contents/MacOS/VBoxManage" -q
         # if docker-machine is installed, add alias to configure/remove environment so we can talk to it
         if [ ! -z "`which docker-machine`" ]; then
             alias docker-setenv='eval "$(docker-machine env)"'
