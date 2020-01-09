@@ -152,23 +152,26 @@ case "$OSTYPE" in
     darwin*)
         alias-app() {
             if [ $# -gt 0 ]; then
-                appPath="$1"
-                if [ $# -gt 1 ] && [ "$2" = "-q" ]; then
+                if [ "$1" = "-q" ]; then
                     noisyAdd=0
+                    shift
                 else
                     noisyAdd=1
                 fi
-                if [ -f "$appPath" -a -x "$appPath" ]; then
-                    if [ $# -gt 1 ]; then
-                        aliasName=$2
-                    else
-                        aliasName=`basename "$appPath"`
-                    fi
-                    alias $aliasName="`echo $appPath | sed -e 's/ /\\\\ /g'`"
-                else
-                    if [ $noisyAdd -gt 0 ]; then
-                        echo bad appPath $appPath
-                    fi
+                if [ $# -gt 0 ]; then
+                  appPath="$1"
+                  if [ -f "$appPath" -a -x "$appPath" ]; then
+                      if [ $# -gt 1 ]; then
+                          aliasName=$2
+                      else
+                          aliasName=`basename "$appPath"`
+                      fi
+                      alias $aliasName="`echo $appPath | sed -e 's/ /\\\\ /g'`"
+                  else
+                      if [ $noisyAdd -gt 0 ]; then
+                          echo bad appPath $appPath
+                      fi
+                  fi
                 fi
             else
                 echo not enough args
@@ -208,9 +211,9 @@ case "$OSTYPE" in
         alias unquarantine='xattr -d com.apple.quarantine'
         alias-app "/Applications/VMware Fusion.app/Contents/Library/VMware OVF Tool/ovftool"
         alias-app "/Applications/p4merge.app/Contents/MacOS/p4merge"
-        alias-app "/Applications/p4v.app/Contents/MacOS/p4v" -q
-        alias-app "/Applications/ccollab_client/p4collab" -q
-        alias-app "/Applications/VirtualBox.app/Contents/MacOS/VBoxManage" -q
+        alias-app -q "/Applications/p4v.app/Contents/MacOS/p4v"
+        alias-app -q "/Applications/ccollab_client/p4collab"
+        alias-app -q "/Applications/VirtualBox.app/Contents/MacOS/VBoxManage"
         # if docker-machine is installed, add alias to configure/remove environment so we can talk to it
         if [ ! -z "`which docker-machine`" ]; then
             alias docker-setenv='eval "$(docker-machine env)"'
