@@ -61,6 +61,7 @@ prepend_path PATH ~/Library/Haskell/bin
 prepend_path PATH /usr/local/git
 prepend_path PATH /usr/local/go
 prepend_path PATH "`dirname $EDITOR`"
+prepend_path PATH "/usr/local/opt/swagger-codegen@2/bin"
 
 ## Other environment setup
 [ -d /usr/local/go ] && export GOROOT=/usr/local/go
