@@ -32,7 +32,7 @@ values."
      cscope
      csharp
      mylocal-ibuffer
-     dockerfile
+     ;dockerfile
      emacs-lisp
      (git :variables
           git-gutter-use-fringe t)
@@ -65,7 +65,8 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '()
+   ;; posframe - add support to pop-up a frame at the point
+   dotspacemacs-additional-packages '(posframe)
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '()
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
@@ -291,6 +292,9 @@ in `dotspacemacs/user-config'."
   (cond
    ((find-font (font-spec :name "Consolas"))
     (message "found Consolas")))
+
+  ;; add Debug Adapter Protocol package for Go
+  ;(require 'dap-go)
 )
 
 (defun dotspacemacs/user-config ()

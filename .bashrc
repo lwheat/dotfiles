@@ -180,6 +180,7 @@ case "$OSTYPE" in
         brew-depend() {
             brew list | while read cask; do echo -e -n "\033[1;34m$cask ->\033[0m"; brew deps $cask | awk '{printf(" %s ", $0)}'; echo ""; done
         }
+        export HOMEBREW_NO_INSTALL_CLEANUP=1
         #
         # update colors used for ls command. default is "exfxcxdxbxegedabagacad"
         # The color designators are as follows:

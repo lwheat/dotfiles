@@ -1,0 +1,2 @@
+brew tap railwaycat/emacsmacport
+brew install cavaliercoder/dmidecode/dmidecode
