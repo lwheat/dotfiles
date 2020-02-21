@@ -131,6 +131,9 @@ add-ssh-keys() {
     fi
 }
 
+#simple func returns true if second arg starts with pattern in first arg
+startswith() { case $2 in "$1"*) true;; *) false;; esac; }
+
 ## Aliases - OS specific
 case "$OSTYPE" in
     linux*)
@@ -210,7 +213,7 @@ case "$OSTYPE" in
         alias ls='ls -G'
         alias lsusb="ioreg -p IOUSB -w 0"
         alias unquarantine='xattr -d com.apple.quarantine'
-        alias-app "/Applications/VMware Fusion.app/Contents/Library/VMware OVF Tool/ovftool"
+        alias-app -q "/Applications/VMware Fusion.app/Contents/Library/VMware OVF Tool/ovftool"
         alias-app "/Applications/p4merge.app/Contents/MacOS/p4merge"
         alias-app -q "/Applications/p4v.app/Contents/MacOS/p4v"
         alias-app -q "/Applications/ccollab_client/p4collab"
@@ -364,7 +367,7 @@ walk-git-tree() {
         startDir=`pwd`
         for i in $dirList ; do
             for j in `find $i -name .git` ; do
-                sync-repo-dir $dryRunArg "`dirname $j`"
+                ! startswith skip-sync $i && sync-repo-dir $dryRunArg "`dirname $j`"
             done
         done
     fi
@@ -475,6 +478,7 @@ alias ssh-nosave='ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/nul
 alias scp-nosave='scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
 alias md5='openssl dgst -md5'
 [ -f ~/bin/Table.jar -a -f ~/bin/TABLE.properties ] && alias table-build='java -jar ~/bin/Table.jar'
+alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
 alias unquarantine='xattr -d com.apple.quarantine'
 alias uuidhash='uuidgen | tr [A-Z] [a-z] | sed "s/-//g"'
 alias xemacs="xterm -geometry 250x80 emacs -bg black -fg white"
