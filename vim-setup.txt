@@ -1,0 +1,13 @@
+#
+# VIM version must be >= 8.0
+# this is the directory where vim looks for packages
+#
+mkdir -p ~/.vim/pack/dist/start
+#
+# vim-airline is a pretty and lightweight status bar for vim
+#
+git clone https://github.com/vim-airline/vim-airline ~/.vim/pack/dist/start/vim-airline
+#
+# vim-fugitive is an awesome git wrapper
+#
+git clone https://github.com/tpope/vim-fugitive.git ~/.vim/pack/dist/start/vim-fugitive
